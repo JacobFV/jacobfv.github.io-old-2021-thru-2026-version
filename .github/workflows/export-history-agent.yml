@@ -1,0 +1,23 @@
+name: export repository history (temporary)
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: create git bundle
+        run: git bundle create repository.bundle --all
+      - uses: actions/upload-artifact@v4
+        with:
+          name: repository-bundle
+          path: repository.bundle
+          retention-days: 1
